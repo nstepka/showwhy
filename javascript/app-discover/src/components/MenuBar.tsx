@@ -24,7 +24,12 @@ import {
 	WeightThresholdState,
 } from '../state/index.js'
 import { saveObjectJSON } from '../utils/Save.js'
-import { command_bar_styles } from './MenuBar.constants.js'
+import {
+	command_bar_styles,
+	ConfidenceThresholdHelp,
+	CorrelationThresholdHelp,
+	WeightThresholdHelp,
+} from './MenuBar.constants.js'
 import {
 	useAutoLayoutSliderMenuItem,
 	useDatasetMenuItems,
@@ -98,14 +103,17 @@ export const MenuBar: React.FC = memo(function MenuBar() {
 	const edgeWeightSliderMenuItem = useSliderMenuItem(
 		'Edge Weight Threshold',
 		WeightThresholdState,
+		WeightThresholdHelp,
 	)
 	const edgeConfidenceSliderMenuItem = useSliderMenuItem(
 		'Edge ConfidenceThreshold',
 		ConfidenceThresholdState,
+		ConfidenceThresholdHelp,
 	)
 	const correlationSliderMenuItem = useSliderMenuItem(
 		'Correlation Visibility Threshold',
 		CorrelationThresholdState,
+		CorrelationThresholdHelp,
 	)
 	const autoLayoutSliderMenuItem = useAutoLayoutSliderMenuItem()
 	const togglePauseButtonMenuItem = useTogglePauseButtonMenuItem()

@@ -165,12 +165,18 @@ export function useViewMenuItems(
 export function useSliderMenuItem(
 	label: string,
 	state: RecoilState<number>,
+	helpText?: string,
 ): ICommandBarItemProps {
 	return useMemo(
 		() => ({
 			key: label.toLowerCase().replaceAll(' ', '-'),
 			onRender: () => (
-				<ThresholdSlider label={label} thresholdState={state} width={200} />
+				<ThresholdSlider
+					helpText={helpText}
+					label={label}
+					thresholdState={state}
+					width={200}
+				/>
 			),
 			styles: { padding: '0.5rem' },
 		}),

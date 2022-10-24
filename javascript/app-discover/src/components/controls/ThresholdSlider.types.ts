@@ -6,7 +6,7 @@ import type { RecoilState } from 'recoil'
 
 export interface ThresholdSliderProps {
 	label?: string
-	inlineLabel?: boolean
+	helpText?: string
 	width?: number
 	thresholdState: RecoilState<number>
 }

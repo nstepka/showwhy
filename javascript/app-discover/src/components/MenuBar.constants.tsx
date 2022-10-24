@@ -14,3 +14,7 @@ export const command_bar_styles: IStyleFunctionOrObject<
 > = {
 	secondarySet: { padding: '0.5rem' },
 }
+
+export const WeightThresholdHelp = `a`
+export const ConfidenceThresholdHelp = `b`
+export const CorrelationThresholdHelp = `c`
