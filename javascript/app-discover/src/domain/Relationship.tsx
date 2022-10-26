@@ -154,6 +154,17 @@ export function arrayIncludesRelationship(
 	)
 }
 
+export function arrayIncludesAnyRelationship(
+	relationships: Relationship[],
+	relationship: Relationship,
+) {
+	return relationships.some(
+		otherRelationship =>
+			hasSameSourceAndTarget(relationship, otherRelationship) ||
+			hasInvertedSourceAndTarget(relationship, otherRelationship),
+	)
+}
+
 export function hasSameReason(
 	reason: ManualRelationshipReason,
 	relationship?: Relationship,

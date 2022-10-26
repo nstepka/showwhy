@@ -24,6 +24,7 @@ export const EdgeItem: React.FC<EdgeItemProps> = memo(function EdgeItem({
 	onSelect,
 	constraint,
 }) {
+	const causes = relationship.source.columnName === columnName
 	return (
 		<Container>
 			<Stack
@@ -77,22 +78,33 @@ export const EdgeItem: React.FC<EdgeItemProps> = memo(function EdgeItem({
 						<Stack.Item align="center">
 							<TooltipHost
 								content={
-									hasSameReason(ManualRelationshipReason.Flipped, constraint)
-										? 'Relationship manually reversed. Click to undo it'
-										: 'Manually reverse direction of relationship'
+									''
+									// hasSameReason(ManualRelationshipReason.Flipped, constraint)
+									// 	? 'Relationship manually reversed. Click to undo it'
+									// 	: 'Manually reverse direction of relationship'
 								}
 							>
 								<IconButtonDark
 									toggle
-									disabled={hasSameReason(
-										ManualRelationshipReason.Pinned,
-										constraint,
-									)}
-									checked={hasSameReason(
-										ManualRelationshipReason.Flipped,
-										constraint,
-									)}
-									iconProps={icons.switch}
+									checked={causes}
+									iconProps={icons.causes}
+									onClick={() => onFlip(relationship)}
+								/>
+							</TooltipHost>
+						</Stack.Item>
+						<Stack.Item align="center">
+							<TooltipHost
+								content={
+									''
+									// hasSameReason(ManualRelationshipReason.Flipped, constraint)
+									// 	? 'Relationship manually reversed. Click to undo it'
+									// 	: 'Manually reverse direction of relationship'
+								}
+							>
+								<IconButtonDark
+									toggle
+									checked={!causes}
+									iconProps={icons.causedBy}
 									onClick={() => onFlip(relationship)}
 								/>
 							</TooltipHost>

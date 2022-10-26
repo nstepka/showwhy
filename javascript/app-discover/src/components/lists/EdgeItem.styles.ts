@@ -12,4 +12,6 @@ export const icons = {
 	pin: { iconName: 'Pin' },
 	switch: { iconName: 'Switch' },
 	pinned: { iconName: 'PinSolid12' },
+	causedBy: { iconName: 'Back' },
+	causes: { iconName: 'Forward' },
 }

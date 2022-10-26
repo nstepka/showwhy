@@ -10,40 +10,17 @@ import { useCallback } from 'react'
 import type { SetterOrUpdater } from 'recoil'
 
 import type { CausalDiscoveryConstraints } from '../../domain/CausalDiscovery/CausalDiscoveryConstraints.js'
-import type { VariableReference } from '../../domain/CausalVariable.js'
 import type { Relationship } from '../../domain/Relationship.js'
 import {
+	arrayIncludesRelationship,
 	hasSameSourceAndTarget,
+	invertRelationship,
 	involvesVariable,
+	ManualRelationshipReason,
 } from '../../domain/Relationship.js'
 import type { CausalVariable } from './../../domain/CausalVariable.js'
 import { EdgeItem } from './EdgeItem.js'
-import { pinEdge, removeEdge } from './EdgeList.utils.js'
-
-export function useOnFlip(
-	generalConstraintsCauses: VariableReference[],
-	setRelationshipOption: (relationship: Relationship) => void,
-	toggleDialogConfirm: () => void,
-	onUpdateFlippedConstraint: (relationship: Relationship) => void,
-): (relationship: Relationship) => void {
-	return useCallback(
-		(relationship: Relationship) => {
-			if (
-				generalConstraintsCauses.find(x => involvesVariable(relationship, x))
-			) {
-				setRelationshipOption(relationship)
-				return toggleDialogConfirm()
-			}
-			onUpdateFlippedConstraint(relationship)
-		},
-		[
-			onUpdateFlippedConstraint,
-			toggleDialogConfirm,
-			setRelationshipOption,
-			generalConstraintsCauses,
-		],
-	)
-}
+import { flipEdge, pinEdge, removeEdge } from './EdgeList.utils.js'
 
 export function useOnPin(
 	constraints: CausalDiscoveryConstraints,
@@ -56,6 +33,48 @@ export function useOnPin(
 		[onUpdateConstraints, constraints],
 	)
 }
+
+export function useOnAddAll(
+	constraints: CausalDiscoveryConstraints,
+	relationships: Relationship[],
+	onUpdateConstraints: SetterOrUpdater<CausalDiscoveryConstraints>,
+	variable: CausalVariable,
+): (type: string) => void {
+	return useCallback(
+		(type: string) => {
+			const list = constraints.manualRelationships.filter(
+				a => !involvesVariable(a, variable),
+			)
+
+			relationships.forEach(x => {
+				const columnName =
+					type === 'causes' ? x.source.columnName : x.target.columnName
+				let relationship = {
+					...x,
+					reason: ManualRelationshipReason.Pinned,
+				} as Relationship
+
+				if (columnName !== variable.columnName) {
+					relationship = invertRelationship({
+						...x,
+						reason: ManualRelationshipReason.Flipped,
+					})
+				}
+
+				if (!arrayIncludesRelationship(list, relationship)) {
+					list.push(relationship)
+				}
+			})
+
+			onUpdateConstraints({
+				...constraints,
+				manualRelationships: list,
+			})
+		},
+		[onUpdateConstraints, constraints, relationships, variable],
+	)
+}
+
 export function useOnRemove(
 	constraints: CausalDiscoveryConstraints,
 	onUpdateConstraints: SetterOrUpdater<CausalDiscoveryConstraints>,
@@ -102,12 +121,14 @@ export function useOnRenderItem(
 	)
 }
 
-export function useOnConfirmFlip(
-	onUpdateFlippedConstraint: (relationshipOption: Relationship) => void,
-	relationshipOption: Relationship | undefined,
-): () => void {
-	return useCallback(() => {
-		if (!relationshipOption) return
-		onUpdateFlippedConstraint(relationshipOption)
-	}, [relationshipOption, onUpdateFlippedConstraint])
+export function useOnFlip(
+	constraints: CausalDiscoveryConstraints,
+	onUpdateConstraints: SetterOrUpdater<CausalDiscoveryConstraints>,
+): (relationship: Relationship) => void {
+	return useCallback(
+		(relationship: Relationship) => {
+			flipEdge(constraints, onUpdateConstraints, relationship)
+		},
+		[constraints, onUpdateConstraints],
+	)
 }

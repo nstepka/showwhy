@@ -16,3 +16,8 @@ export interface EdgeListProps {
 	constraints: CausalDiscoveryConstraints
 	onUpdateConstraints: SetterOrUpdater<CausalDiscoveryConstraints>
 }
+
+export enum EdgeTypes {
+	Causes = 'Causes',
+	CausedBy = 'Caused by',
+}
