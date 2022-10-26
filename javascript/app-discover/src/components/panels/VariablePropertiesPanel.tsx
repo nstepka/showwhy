@@ -5,6 +5,7 @@
 import { PrimaryButton, Stack, Text, TooltipHost } from '@fluentui/react'
 import { memo } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
+import styled from 'styled-components'
 
 import { isAddable } from '../../domain/CausalVariable.js'
 import * as Graph from '../../domain/Graph.js'
@@ -66,7 +67,7 @@ export const VariablePropertiesPanel: React.FC<VariablePropertiesPanelProps> =
 		}
 
 		return (
-			<>
+			<Container>
 				<Text variant={'large'} block>
 					{variable.name}
 				</Text>
@@ -139,6 +140,10 @@ export const VariablePropertiesPanel: React.FC<VariablePropertiesPanelProps> =
 
 				<Divider>Correlations</Divider>
 				<VariableCorrelationsList variable={variable} />
-			</>
+			</Container>
 		)
 	})
+
+const Container = styled.div`
+	padding: 8px;
+`
