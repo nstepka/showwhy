@@ -92,7 +92,7 @@ To deploy the template, you can use the Azure portal, Azure PowerShell, or the A
 
 In the Azure portal, select Create a resource, search for "AKS ARM Template", and select it from the results.
 Follow the prompts to enter the required parameters and confirm it.
-This will create two resource groups, one with the resource group name that yopu passed and a second one starting with MC_{RESOURCE_GROUP}_{CLUSTER_NAME}_{REGION}.
+This will create two resource groups, one with the resource group name that you passed and a second one starting with MC_{RESOURCE_GROUP}_{CLUSTER_NAME}_{REGION}.
 
 ## Output
 `url`: The url to access your deployed platform
